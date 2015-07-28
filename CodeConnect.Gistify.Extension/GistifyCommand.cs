@@ -9,6 +9,7 @@ using System.ComponentModel.Design;
 using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
+using Microsoft.VisualStudio.TextManager.Interop;
 
 namespace CodeConnect.Gistify.Extension
 {
@@ -93,17 +94,18 @@ namespace CodeConnect.Gistify.Extension
         /// <param name="e">Event args.</param>
         private void MenuItemCallback(object sender, EventArgs e)
         {
-            string message = string.Format(CultureInfo.CurrentCulture, "Inside {0}.MenuItemCallback()", this.GetType().FullName);
-            string title = "GistifyCommand";
-
-            // Show a message box to prove we were here
-            VsShellUtilities.ShowMessageBox(
-                this.ServiceProvider,
-                message,
-                title,
-                OLEMSGICON.OLEMSGICON_INFO,
-                OLEMSGBUTTON.OLEMSGBUTTON_OK,
-                OLEMSGDEFBUTTON.OLEMSGDEFBUTTON_FIRST);
+            IVsTextManager textManager = (IVsTextManager)ServiceProvider.GetService(typeof(SVsTextManager));
+            int startPosition, endPosition;
+            string filePath;
+            if (textManager.TryFindDocumentAndPosition(out filePath, out startPosition, out endPosition))
+            {
+                //var target = PrepareGist(filePath, startPosition, endPosition);
+                //GoToGist(target);
+            }
+            else
+            {
+                StatusBar.ShowStatus("To capture a gist, place the cursor in C# code first.");
+            }
         }
     }
 }
