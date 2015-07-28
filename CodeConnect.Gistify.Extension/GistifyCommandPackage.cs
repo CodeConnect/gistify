@@ -68,6 +68,9 @@ namespace CodeConnect.Gistify.Extension
         {
             GistifyCommand.Initialize(this);
             base.Initialize();
+
+            var vsStatusBar = ServiceProvider.GlobalProvider.GetService(typeof(SVsStatusbar)) as IVsStatusbar;
+            StatusBar.Initialize(vsStatusBar);
         }
 
         #endregion
