@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -10,8 +11,9 @@ namespace CodeConnect.Gistify.Extension
     {
         internal static string PrepareGist(string filePath, int startPosition, int endPosition)
         {
-            // TODO
-            return "https://comealive.io";
+            // TODO: get the code snippet
+            var github = new ThirdParties.GitHubConnection();
+            return github.CreateGist("Test").Result; // todo: async
         }
 
         internal static void GoToGist(string target)
@@ -26,7 +28,7 @@ namespace CodeConnect.Gistify.Extension
                 System.Diagnostics.Process.Start(target);
                 StatusBar.ShowStatus($"Gist saved in {target}");
             }
-            catch (System.ComponentModel.Win32Exception noBrowser)
+            catch (Win32Exception noBrowser)
             {
                 if (noBrowser.ErrorCode == -2147467259)
                 {
@@ -36,9 +38,9 @@ namespace CodeConnect.Gistify.Extension
                 System.Diagnostics.Debugger.Break();
 #endif
             }
-            catch (System.Exception other)
+            catch
             {
-                StatusBar.ShowStatus($"Another error.");
+                StatusBar.ShowStatus($"Gistify ran into an error.");
 #if DEBUG
                 System.Diagnostics.Debugger.Break();
 #endif
