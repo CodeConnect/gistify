@@ -18,6 +18,8 @@ namespace CodeConnect.Gistify.Extension
     /// </summary>
     internal sealed class GistifyCommand
     {
+        #region Boilerplate
+
         /// <summary>
         /// Command ID.
         /// </summary>
@@ -31,7 +33,7 @@ namespace CodeConnect.Gistify.Extension
         /// <summary>
         /// VS Package that provides this command, not null.
         /// </summary>
-        private readonly Package package;
+        private readonly Package _package;
 
         /// <summary>
         /// Initializes a new instance of the <see cref="GistifyCommand"/> class.
@@ -45,7 +47,7 @@ namespace CodeConnect.Gistify.Extension
                 throw new ArgumentNullException("package");
             }
 
-            this.package = package;
+            this._package = package;
 
             OleMenuCommandService commandService = this.ServiceProvider.GetService(typeof(IMenuCommandService)) as OleMenuCommandService;
             if (commandService != null)
@@ -72,7 +74,7 @@ namespace CodeConnect.Gistify.Extension
         {
             get
             {
-                return this.package;
+                return this._package;
             }
         }
 
@@ -84,6 +86,8 @@ namespace CodeConnect.Gistify.Extension
         {
             Instance = new GistifyCommand(package);
         }
+
+        #endregion
 
         /// <summary>
         /// This function is the callback used to execute the command when the menu item is clicked.
