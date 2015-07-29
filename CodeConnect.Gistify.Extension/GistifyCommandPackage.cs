@@ -67,6 +67,7 @@ namespace CodeConnect.Gistify.Extension
         protected override void Initialize()
         {
             GistifyCommand.Initialize(this);
+            SolutionManager.Initialize(this);
             base.Initialize();
 
             var vsStatusBar = ServiceProvider.GlobalProvider.GetService(typeof(SVsStatusbar)) as IVsStatusbar;
