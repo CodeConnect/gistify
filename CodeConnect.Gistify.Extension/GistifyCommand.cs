@@ -103,8 +103,8 @@ namespace CodeConnect.Gistify.Extension
             string filePath;
             if (textManager.TryFindDocumentAndPosition(out filePath, out startPosition, out endPosition))
             {
-                //var target = PrepareGist(filePath, startPosition, endPosition);
-                //GoToGist(target);
+                var target = GistifyEngine.PrepareGist(filePath, startPosition, endPosition);
+                GistifyEngine.GoToGist(target);
             }
             else
             {

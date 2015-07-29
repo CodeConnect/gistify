@@ -55,6 +55,7 @@
   <ItemGroup>
     <Compile Include="GistifyCommand.cs" />
     <Compile Include="GistifyCommandPackage.cs" />
+    <Compile Include="GistifyEngine.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionManager.cs" />
     <Compile Include="StatusBar.cs" />
