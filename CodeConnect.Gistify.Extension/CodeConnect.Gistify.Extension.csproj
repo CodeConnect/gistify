@@ -53,6 +53,8 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="CodeAnalysis\CodeAnalyzer.cs" />
+    <Compile Include="CodeAnalysis\VSIntegration.cs" />
     <Compile Include="GistifyCommand.cs" />
     <Compile Include="GistifyCommandPackage.cs" />
     <Compile Include="GistifyEngine.cs" />
