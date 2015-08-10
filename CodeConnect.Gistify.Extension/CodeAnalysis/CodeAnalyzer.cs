@@ -14,6 +14,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
 
         public CodeAnalyzer(int startPos, int endPos, string fileName)
         {
+            // TODO: Get either filename or document, but we need to have a document here.
             //_snippet = VSIntegration
         }
 
@@ -27,6 +28,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         /// <returns>Strign representation of the gist</returns>
         public string GenerateGist(SyntaxTree snippet)
         {
+            // TODO: Use Document.GetSemanticModel()
             foreach (var declaration in FindDeclarations(snippet, model))
             {
                 // TODO: Create syntax
