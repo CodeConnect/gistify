@@ -11,23 +11,36 @@ namespace CodeConnect.Gistify.Tests
         [TestMethod]
         public void FindDeclarations()
         {
-            var tree = TestHelpers.GetTestSyntaxTreeWithCode(@"public class BaseMethodDeclarations
+            var tree = TestHelpers.GetTestSyntaxTreeWithCode(@"public class SampleClass
             {
                 static int staticField = 1;
                 int instanceField = 2;
                 int uninitializedInstanceField;
                 int instanceProperty { get; set; }
 
-                static BaseMethodDeclarations()
+                static SampleClass()
                 {
                     int magic = 1;
-                    magic += 1;
+                    magic += staticField;
+                }
+
+                void Test1()
+                {
+                    int magic = 1;
+                    magic += instanceField;
+                    magic += instanceProperty;
+                }
+
+                void Test2()
+                {
+                    uninitializedInstanceField = 3;
+                    InstanceProperty = 3;
                 }
             }");
             var compilation = TestHelpers.CreateCompilation(tree);
             var model = compilation.GetSemanticModel(tree);
 
-            var walker = new DiscoveryWalker(0, 10, model);
+            var walker = new DiscoveryWalker(400, 700, model);
             walker.Visit(tree.GetRoot());
         }
     }
