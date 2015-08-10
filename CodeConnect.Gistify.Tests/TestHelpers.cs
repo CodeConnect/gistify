@@ -9,9 +9,9 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeConnect.Gistify.Tests
 {
-    class TestHelpers
+    static class TestHelpers
     {
-        internal SyntaxTree GetTestSyntaxTreeWithCode(string testCode)
+        internal static SyntaxTree GetTestSyntaxTreeWithCode(string testCode)
         {
             var tree = CSharpSyntaxTree.ParseText(@"
 using System;

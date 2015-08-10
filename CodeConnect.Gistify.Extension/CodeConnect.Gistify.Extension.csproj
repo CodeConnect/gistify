@@ -54,6 +54,8 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="CodeAnalysis\CodeAnalyzer.cs" />
+    <Compile Include="CodeAnalysis\DiscoveryWalker.cs" />
+    <Compile Include="CodeAnalysis\ObjectInformation.cs" />
     <Compile Include="CodeAnalysis\VSIntegration.cs" />
     <Compile Include="GistifyCommand.cs" />
     <Compile Include="GistifyCommandPackage.cs" />

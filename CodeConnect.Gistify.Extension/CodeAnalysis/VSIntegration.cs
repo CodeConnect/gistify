@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,10 +7,10 @@ using System.Threading.Tasks;
 
 namespace CodeConnect.Gistify.Extension.CodeAnalysis
 {
-    class VSIntegration
+    static class VSIntegration
     {
 
-        internal string GetDocumentSyntaxRoot(string filePath)
+        internal static SyntaxNode GetDocumentSyntaxRoot(string filePath)
         {
             var currentSolution = SolutionManager.CurrentSolution;
             var project = currentSolution.Projects.Where(n => n.Documents.Any(m => m.FilePath == filePath)).FirstOrDefault();
