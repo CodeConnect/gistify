@@ -27,25 +27,6 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
             DefinedOutside = new List<ObjectInformation>();
         }
 
-        public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
-        {
-            base.VisitFieldDeclaration(node);
-            foreach (var variable in node.Declaration.Variables)
-            {
-                var name = variable.Identifier.ToString();
-                var pos = variable.Span.Start;
-                var end = variable.Span.End;
-                var symbol = _model.GetSymbolInfo(node).Symbol;
-                var objectInfo = new ObjectInformation()
-                {
-                    Identifier = variable.Identifier.ToString(),
-                    // TODO: fill the rest
-                };
-                //DefinedOutside.Add(objectInfo);
-            }
-            var t = DefinedOutside;
-        }
-
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             base.VisitIdentifierName(node);
@@ -82,9 +63,29 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
                         };
                         DefinedOutside.Add(objectInfo);
                     }
-                    
+
                 }
             }
+        }
+
+        /*
+        public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
+        {
+            base.VisitFieldDeclaration(node);
+            foreach (var variable in node.Declaration.Variables)
+            {
+                var name = variable.Identifier.ToString();
+                var pos = variable.Span.Start;
+                var end = variable.Span.End;
+                var symbol = _model.GetSymbolInfo(node).Symbol;
+                var objectInfo = new ObjectInformation()
+                {
+                    Identifier = variable.Identifier.ToString(),
+                    // TODO: fill the rest
+                };
+                //DefinedOutside.Add(objectInfo);
+            }
+            var t = DefinedOutside;
         }
 
         public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
@@ -103,5 +104,6 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
             };
             //DefinedOutside.Add(objectInfo);
         }
+        */
     }
 }
