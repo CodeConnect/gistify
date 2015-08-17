@@ -10,13 +10,12 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
     static class VSIntegration
     {
 
-        internal static SyntaxNode GetDocumentSyntaxRoot(string filePath)
+        internal static Document GetDocument(string filePath)
         {
             var currentSolution = SolutionManager.CurrentSolution;
             var project = currentSolution.Projects.Where(n => n.Documents.Any(m => m.FilePath == filePath)).FirstOrDefault();
             var document = project.Documents.Where(n => n.FilePath == filePath).Single();
-            var root = document.GetSyntaxRootAsync();
-            return root.Result;
+            return document;
         }
 
     }

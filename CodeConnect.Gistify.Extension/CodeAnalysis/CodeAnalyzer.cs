@@ -7,18 +7,17 @@ using System.Threading.Tasks;
 
 namespace CodeConnect.Gistify.Extension.CodeAnalysis
 {
-    class CodeAnalyzer
+    public static class CodeAnalyzer
     {
-        int _startPos, _endPos;
-        SyntaxTree _snippet;
-
-        public CodeAnalyzer(int startPos, int endPos, string fileName)
+        public static void GetGistFromSnippet(int startPos, int endPos, string fileName)
         {
-            // TODO: Get either filename or document, but we need to have a document here.
-            //_snippet = VSIntegration
+            var document = VSIntegration.GetDocument(fileName);
+            var tree = document.GetSyntaxTreeAsync().Result;
+            var model = document.GetSemanticModelAsync().Result;
+            var objectInfos = FindDeclarations(tree, model, startPos, endPos);
+            var gist = GenerateGist(objectInfos, tree, startPos, endPos)
         }
 
-        /*
         /// <summary>
         /// Finds all declarations with the walker,
         /// tests them against the semantic model to learn about their namespaces and types (and assemblies)
@@ -26,17 +25,13 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         /// </summary>
         /// <param name="snippet">Snippet of code to analyze</param>
         /// <returns>Strign representation of the gist</returns>
-        public string GenerateGist(SyntaxTree snippet)
+        public static SyntaxNode GenerateGist(IEnumerable<ObjectInformation> objectInfos, SyntaxTree snippet, int startPos, int endPos)
         {
-            // TODO: Use Document.GetSemanticModel()
-            foreach (var declaration in FindDeclarations(snippet, model))
-            {
-                // TODO: Create syntax
-            }
-
-            // TODO: Return combined syntax
+            var usingStatements = SyntaxBuilder.GetUsingStatements(objectInfos);
+            var snippetCode = SyntaxBuilder.GetSnippet(snippet, startPos, endPos);
+            var gist = SyntaxBuilder.GetGist(usingStatements, snippetCode);
+            return gist;
         }
-        */
 
         /// <summary>
         /// Finds all declarations with the walker,
@@ -44,13 +39,13 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         /// builds the additional syntax
         /// </summary>
         /// <returns>List whose key is the position and value is the name of a declared variable</returns>
-        public List<ObjectInformation> FindDeclarations(SyntaxTree syntax, SemanticModel model)
+        public static IEnumerable<ObjectInformation> FindDeclarations(SyntaxTree syntax, SemanticModel model, int startPos, int endPos)
         {
             // use a walker to visit all declarations
             // use a semantic model to discover what actually are these declarations (what do they depend on)
             // TODO: get compilation of a document
 
-            var walker = new DiscoveryWalker(_startPos, _endPos, model);
+            var walker = new DiscoveryWalker(startPos, endPos, model);
             walker.Visit(syntax.GetRoot());
             return walker.DefinedOutside;
         }
