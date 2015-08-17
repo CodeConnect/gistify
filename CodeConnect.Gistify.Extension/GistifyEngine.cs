@@ -12,8 +12,12 @@ namespace CodeConnect.Gistify.Extension
         internal static string PrepareGist(string filePath, int startPosition, int endPosition)
         {
             // TODO: get the code snippet
-            var github = new ThirdParties.GitHubConnection();
-            return github.CreateGist("Test").Result; // todo: async
+            var gistUrl = Task.Run(() =>
+            {
+                var github = new ThirdParties.GitHubConnection();
+                return github.CreateGist("Test");
+            }).Result;
+            return gistUrl;
         }
 
         internal static void GoToGist(string target)

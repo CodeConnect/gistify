@@ -54,7 +54,7 @@ namespace CodeConnect.Gistify.Extension.ThirdParties
                     Public = false,
                 };
                 newGist.Files.Add("fragment.cs", contents);
-                var gist = github.Gist.Create(newGist).Result;
+                var gist = await github.Gist.Create(newGist).ConfigureAwait(false);
                 return gist.HtmlUrl;
             }
             catch (Exception)
