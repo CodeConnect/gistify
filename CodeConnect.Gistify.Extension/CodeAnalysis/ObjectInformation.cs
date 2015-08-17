@@ -24,5 +24,10 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         {
             get; set;
         }
+
+        public override string ToString()
+        {
+            return $"{FullTypeName} {Identifier}";
+        }
     }
 }

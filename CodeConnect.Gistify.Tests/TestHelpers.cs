@@ -33,5 +33,35 @@ namespace CodeConnect.Gistify.MockNamespace
                 syntaxTrees: new[] { tree }, references: new[] { mscorlib });
             return compilation;
         }
+
+        internal static SyntaxTree GetSampleTree1()
+        {
+            return TestHelpers.GetTestSyntaxTreeWithCode(@"public class SampleClass
+            {
+                static int staticField = 1;
+                int instanceField = 2;
+                int uninitializedInstanceField;
+                int instanceProperty { get; set; }
+
+                static SampleClass()
+                {
+                    int magic = 1;
+                    magic += staticField;
+                }
+
+                void Test1()
+                {
+                    int magic = 1;
+                    magic += instanceField;
+                    magic += instanceProperty;
+                }
+
+                void Test2()
+                {
+                    uninitializedInstanceField = 3;
+                    InstanceProperty = 3;
+                }
+            }");
+        }
     }
 }

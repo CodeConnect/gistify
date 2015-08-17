@@ -41,7 +41,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
                     Identifier = variable.Identifier.ToString(),
                     // TODO: fill the rest
                 };
-                DefinedOutside.Add(objectInfo);
+                //DefinedOutside.Add(objectInfo);
             }
             var t = DefinedOutside;
         }
@@ -49,7 +49,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             base.VisitIdentifierName(node);
-            if (node.Span.Start >= _start && node.Span.End <= _end)
+            if (node.Span.Start < _end && node.Span.End > _start)
             {
                 // Process only nodes in the target range
                 ProcessIdentifierName(node);
@@ -69,8 +69,9 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
 
                 foreach (var location in symbol.OriginalDefinition.Locations)
                 {
+                    var l = location;
                     // Process only nodes defined outside of the target range
-                    if (location.IsInSource && location.SourceSpan.Start < _start && location.SourceSpan.End > _end)
+                    if (location.IsInSource && !(location.SourceSpan.Start < _end && location.SourceSpan.End > _start))
                     {
                         var objectInfo = new ObjectInformation()
                         {
@@ -79,6 +80,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
                             Namespace = symbol.ContainingNamespace.ToString(),
                             AssemblyName = symbol.ContainingAssembly.ToString()
                         };
+                        DefinedOutside.Add(objectInfo);
                     }
                     
                 }
@@ -88,25 +90,6 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
         {
             base.VisitAssignmentExpression(node);
-
-            // Analyze both sides:
-            var rightSyntax = node.Right;
-            var rightInfo = _model.GetSymbolInfo(rightSyntax).Symbol;
-            var leftSyntax = node.Left;
-            var leftInfo = _model.GetSymbolInfo(leftSyntax).Symbol;
-
-            if (rightInfo != null)
-            {
-                var t1 = rightInfo.ContainingType;
-                var t2 = rightInfo.ContainingAssembly;
-                var t3 = rightInfo.ContainingNamespace;
-            }
-            if (leftInfo != null)
-            {
-                var t1 = leftInfo.ContainingType;
-                var t2 = leftInfo.ContainingAssembly;
-                var t3 = leftInfo.ContainingNamespace;
-            }
         }
 
         public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
@@ -118,7 +101,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
                 Identifier = node.Identifier.ToString(),
                 // TODO: fill the rest
             };
-            DefinedOutside.Add(objectInfo);
+            //DefinedOutside.Add(objectInfo);
         }
     }
 }
