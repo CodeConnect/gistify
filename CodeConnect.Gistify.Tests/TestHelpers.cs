@@ -41,7 +41,7 @@ namespace CodeConnect.Gistify.MockNamespace
                 static int staticField = 1;
                 int instanceField = 2;
                 int uninitializedInstanceField;
-                int instanceProperty { get; set; }
+                int InstanceProperty { get; set; }
 
                 static SampleClass()
                 {
@@ -53,7 +53,7 @@ namespace CodeConnect.Gistify.MockNamespace
                 {
                     int magic = 1;
                     magic += instanceField;
-                    magic += instanceProperty;
+                    magic += InstanceProperty;
                 }
 
                 void Test2()
