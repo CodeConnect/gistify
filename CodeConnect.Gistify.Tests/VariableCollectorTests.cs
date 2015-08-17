@@ -45,7 +45,7 @@ namespace CodeConnect.Gistify.Tests
             var compilation = TestHelpers.CreateCompilation(tree);
             var model = compilation.GetSemanticModel(tree);
 
-            var walker = new DiscoveryWalker(475 + 130, 498 + 130, model);
+            var walker = new DiscoveryWalker(628, 640, model);
             walker.Visit(tree.GetRoot());
 
             var definedOutside = walker.DefinedOutside;
