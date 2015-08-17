@@ -15,7 +15,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
             var tree = document.GetSyntaxTreeAsync().Result;
             var model = document.GetSemanticModelAsync().Result;
             var objectInfos = FindDeclarations(tree, model, startPos, endPos);
-            var gist = GenerateGist(objectInfos, tree, startPos, endPos)
+            var gist = GenerateGist(objectInfos, tree, startPos, endPos);
         }
 
         /// <summary>
