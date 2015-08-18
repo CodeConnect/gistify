@@ -103,12 +103,17 @@ namespace CodeConnect.Gistify.Extension
             string filePath;
             if (textManager.TryFindDocumentAndPosition(out filePath, out startPosition, out endPosition))
             {
+                if (endPosition == startPosition)
+                {
+                    StatusBar.ShowStatus($"To create a gist, select a snippet of C# code first.");
+                    return;
+                }
                 var target = GistifyEngine.PrepareGist(filePath, startPosition, endPosition);
                 GistifyEngine.GoToGist(target);
             }
             else
             {
-                StatusBar.ShowStatus("To capture a gist, place the cursor in C# code first.");
+                StatusBar.ShowStatus("To create a gist, select a snippet of C# code first.");
             }
         }
     }
