@@ -39,7 +39,7 @@ namespace CodeConnect.Gistify.MockNamespace
             return TestHelpers.GetTestSyntaxTreeWithCode(@"public class SampleClass
             {
                 static int staticField = 1;
-                int instanceField = 2;
+                System.Int32 instanceField = 2;
                 int uninitializedInstanceField;
                 int InstanceProperty { get; set; }
 
@@ -60,6 +60,7 @@ namespace CodeConnect.Gistify.MockNamespace
                 {
                     uninitializedInstanceField = 3;
                     InstanceProperty = 3;
+                    StringBuilder sb = new StringBuilder();
                 }
             }");
         }

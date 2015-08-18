@@ -16,8 +16,8 @@ namespace CodeConnect.Gistify.Tests
             var model = compilation.GetSemanticModel(tree);
 
             // Test 1:
-            var start = 389 + 130;
-            var end = 563 + 130;
+            var start = 582;
+            var end = start + 125 + 2;
             var walker = new DiscoveryWalker(start, end, model);
             walker.Visit(tree.GetRoot());
 
@@ -39,8 +39,8 @@ namespace CodeConnect.Gistify.Tests
             var model = compilation.GetSemanticModel(tree);
 
             // Test 2:
-            var start = 581 + 130;
-            var end = 723 + 130;
+            var start = 748;
+            var end = start + 202 + 5;
             var walker = new DiscoveryWalker(start, end, model);
             walker.Visit(tree.GetRoot());
 
@@ -61,8 +61,8 @@ namespace CodeConnect.Gistify.Tests
             var compilation = TestHelpers.CreateCompilation(tree);
             var model = compilation.GetSemanticModel(tree);
 
-            var start = 628;
-            var end = 640;
+            var start = 582 + 56;
+            var end = start + 23;
             var walker = new DiscoveryWalker(start, end, model);
             walker.Visit(tree.GetRoot());
 
