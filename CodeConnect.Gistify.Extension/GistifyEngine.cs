@@ -1,4 +1,5 @@
-﻿using System;
+﻿using CodeConnect.Gistify.Extension.CodeAnalysis;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -11,11 +12,11 @@ namespace CodeConnect.Gistify.Extension
     {
         internal static string PrepareGist(string filePath, int startPosition, int endPosition)
         {
-            // TODO: get the code snippet
+            var gist = CodeAnalyzer.GetGistFromSnippet(startPosition, endPosition, filePath);
             var gistUrl = Task.Run(() =>
             {
                 var github = new ThirdParties.GitHubConnection();
-                return github.CreateGist("Test");
+                return github.CreateGist(gist);
             }).Result;
             return gistUrl;
         }
