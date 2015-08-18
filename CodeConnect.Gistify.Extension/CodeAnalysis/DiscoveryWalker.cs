@@ -15,6 +15,11 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         int _start, _end;
 
         /// <summary>
+        /// Namespace of the first identifier in this snippet. We won't display usings for this one.
+        /// </summary>
+        public string SnippetsNamespace { get; private set; }
+
+        /// <summary>
         /// Contains information of objects defined outside of the provided scope
         /// </summary>
         public List<ObjectInformation> DefinedOutside { get; private set; }
@@ -30,10 +35,15 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             base.VisitIdentifierName(node);
+            // Process only nodes in the target range
             if (node.Span.Start < _end && node.Span.End > _start)
             {
-                // Process only nodes in the target range
                 ProcessIdentifierName(node);
+            }
+            else if (SnippetsNamespace == String.Empty)
+            {
+                var symbol = _model.GetSymbolInfo(node).Symbol;
+                SnippetsNamespace = symbol.ContainingNamespace.ToString();
             }
         }
 
@@ -59,7 +69,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
                             Identifier = node.Identifier.ToString(),
                             FullTypeName = _model.GetTypeInfo(node).Type.ToString(),
                             Namespace = symbol.ContainingNamespace.ToString(),
-                            AssemblyName = symbol.ContainingAssembly.ToString()
+                            AssemblyName = symbol.ContainingAssembly.Name,
                         };
                         DefinedOutside.Add(objectInfo);
                     }

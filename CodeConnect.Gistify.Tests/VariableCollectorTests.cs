@@ -16,11 +16,19 @@ namespace CodeConnect.Gistify.Tests
             var model = compilation.GetSemanticModel(tree);
 
             // Test 1:
-            var walker = new DiscoveryWalker(389 + 130, 563 + 130, model);
+            var start = 389 + 130;
+            var end = 563 + 130;
+            var walker = new DiscoveryWalker(start, end, model);
             walker.Visit(tree.GetRoot());
 
             var definedOutside = walker.DefinedOutside;
+            var snippet = SyntaxBuilder.GetSnippet(tree, start, end);
+            var usings = SyntaxBuilder.GetUsingStatements(definedOutside);
+            var declarations = SyntaxBuilder.GetDeclarations(definedOutside);
+
             Assert.AreEqual(2, definedOutside.Count);
+            Assert.AreEqual(1, usings.Length);
+            Assert.AreEqual(2, declarations);
         }
 
         [TestMethod]
@@ -31,11 +39,19 @@ namespace CodeConnect.Gistify.Tests
             var model = compilation.GetSemanticModel(tree);
 
             // Test 2:
-            var walker = new DiscoveryWalker(581 + 130, 723 + 130, model);
+            var start = 581 + 130;
+            var end = 723 + 130;
+            var walker = new DiscoveryWalker(start, end, model);
             walker.Visit(tree.GetRoot());
 
             var definedOutside = walker.DefinedOutside;
+            var snippet = SyntaxBuilder.GetSnippet(tree, start, end);
+            var usings = SyntaxBuilder.GetUsingStatements(definedOutside);
+            var declarations = SyntaxBuilder.GetDeclarations(definedOutside);
+
             Assert.AreEqual(2, definedOutside.Count);
+            Assert.AreEqual(1, usings.Length);
+            Assert.AreEqual(2, declarations);
         }
 
         [TestMethod]
@@ -45,11 +61,19 @@ namespace CodeConnect.Gistify.Tests
             var compilation = TestHelpers.CreateCompilation(tree);
             var model = compilation.GetSemanticModel(tree);
 
-            var walker = new DiscoveryWalker(628, 640, model);
+            var start = 628;
+            var end = 640;
+            var walker = new DiscoveryWalker(start, end, model);
             walker.Visit(tree.GetRoot());
 
             var definedOutside = walker.DefinedOutside;
+            var snippet = SyntaxBuilder.GetSnippet(tree, start, end);
+            var usings = SyntaxBuilder.GetUsingStatements(definedOutside);
+            var declarations = SyntaxBuilder.GetDeclarations(definedOutside);
+
             Assert.AreEqual(2, definedOutside.Count);
+            Assert.AreEqual(1, usings.Length);
+            Assert.AreEqual(2, declarations);
         }
 
     }
