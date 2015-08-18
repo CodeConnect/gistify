@@ -4,6 +4,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.CSharp;
 using System.Text;
+using System.Linq;
 
 namespace CodeConnect.Gistify.Extension.CodeAnalysis
 {
@@ -16,7 +17,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
 
         public static string GetGist(string usingStatements, string declarations, string snippetCode)
         {
-            return String.Concat(usingStatements, "\n", declarations, "\n", snippetCode);
+            return String.Concat(/*usingStatements, */declarations, snippetCode);
         }
 
         public static string GetUsingStatements(IEnumerable<ObjectInformation> objectInfos)
@@ -39,10 +40,24 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         public static string GetDeclarations(IEnumerable<ObjectInformation> objectInfos)
         {
             StringBuilder declarations = new StringBuilder();
-            foreach (var objectInfo in objectInfos)
+            HashSet<ObjectInformation> processedObjects = new HashSet<ObjectInformation>();
+            string previousKind = String.Empty;
+
+            foreach (var objectInfo in objectInfos.OrderBy(info => info.Kind))
             {
+                if (previousKind != objectInfo.Kind)
+                {
+                    declarations.AppendLine($"// {objectInfo.Kind}:");
+                    previousKind = objectInfo.Kind;
+                }
+                if (processedObjects.Contains(objectInfo))
+                {
+                    continue;
+                }
                 declarations.AppendLine(createDeclaration(objectInfo));
-             }
+                processedObjects.Add(objectInfo);
+            }
+            declarations.AppendLine("/* --- */");
             return declarations.ToString();
         }
 
@@ -53,7 +68,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
 
         private static string createDeclaration(ObjectInformation objectInfo)
         {
-            return $"{objectInfo.FullTypeName} {objectInfo.Identifier}; // in {objectInfo.Namespace}";
+            return $"{objectInfo.TypeName} {objectInfo.Identifier}; // using {objectInfo.Namespace}";
         }
     }
 }

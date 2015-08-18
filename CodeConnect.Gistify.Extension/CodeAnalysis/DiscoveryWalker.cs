@@ -50,26 +50,50 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         private void ProcessIdentifierName(IdentifierNameSyntax node)
         {
             var symbol = _model.GetSymbolInfo(node).Symbol;
+            var type = _model.GetTypeInfo(node).Type;
+            if (type == null || symbol == null)
+            {
+                // We need a symbol
+                // Method names are an example of identifiers with no types, and we ignore them
+                return;
+            }
+            if (node.IsVar)
+            {
+                return;
+            }
             if (symbol != null)
             {
-                var t1 = symbol.ContainingType;
-                var t2 = symbol.ContainingAssembly;
-                var t3 = symbol.ContainingNamespace;
-                var t4 = symbol.OriginalDefinition;
-                var t = _model.GetTypeInfo(node).Type;
+                // Not used:
+                // var fullTypeName = type?.ToString() ?? String.Empty;
+                // var containingType = symbol.ContainingType;
+                var typeName = type?.Name ?? String.Empty;
+                var namedType = type as INamedTypeSymbol;
+                if (namedType != null)
+                {
+                    List<string> argumentNames = new List<string>();
+                    foreach (var argument in namedType.TypeArguments)
+                    {
+                        var argumentName = argument.Name;
+                        argumentNames.Add(argumentName);
+                    }
+                    if (argumentNames.Any())
+                    {
+                        typeName = $"{type?.Name}<{String.Join(", ", argumentNames)}>";
+                    }
+                }
 
                 foreach (var location in symbol.OriginalDefinition.Locations)
                 {
-                    var l = location;
                     // Process only nodes defined outside of the target range
-                    if (location.IsInSource && !(location.SourceSpan.Start < _end && location.SourceSpan.End > _start))
+                    if (!location.IsInSource || !(location.SourceSpan.Start < _end && location.SourceSpan.End > _start))
                     {
                         var objectInfo = new ObjectInformation()
                         {
-                            Identifier = node.Identifier.ToString(),
-                            FullTypeName = _model.GetTypeInfo(node).Type.ToString(),
-                            Namespace = symbol.ContainingNamespace.ToString(),
-                            AssemblyName = symbol.ContainingAssembly.Name,
+                            Identifier = node?.Identifier.ToString() ?? String.Empty,
+                            TypeName = typeName ?? String.Empty,
+                            Namespace = type?.ContainingNamespace?.ToString() ?? String.Empty,
+                            AssemblyName = type?.ContainingAssembly?.Name ?? String.Empty,
+                            Kind = symbol.Kind.ToString(),
                         };
                         DefinedOutside.Add(objectInfo);
                     }

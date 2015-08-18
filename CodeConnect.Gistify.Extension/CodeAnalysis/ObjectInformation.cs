@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.CodeAnalysis;
 
 namespace CodeConnect.Gistify.Extension.CodeAnalysis
 {
     public struct ObjectInformation
     {
-        internal string FullTypeName
+        internal string TypeName
         {
             get; set;
         }
@@ -24,10 +25,14 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         {
             get; set;
         }
+        internal string Kind
+        {
+            get; set;
+        }
 
         public override string ToString()
         {
-            return $"{FullTypeName} {Identifier}";
+            return $"{Kind}: {TypeName} {Identifier}";
         }
     }
 }
