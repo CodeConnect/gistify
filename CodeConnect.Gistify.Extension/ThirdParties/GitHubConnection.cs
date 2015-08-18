@@ -43,7 +43,7 @@ namespace CodeConnect.Gistify.Extension.ThirdParties
                 string password = Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER", "gitPassword", "invalid").ToString();
                 var credentials = new Octokit.Credentials("git@amadeusw.com", password);
 
-                var connection = new Connection(new ProductHeaderValue("Visual Studio"))
+                var connection = new Connection(new ProductHeaderValue("Whatever"))
                 {
                     Credentials = credentials
                 };
