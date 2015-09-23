@@ -12,6 +12,7 @@ namespace CodeConnect.Gistify.Extension.ThirdParties
         public static void HandleAugmentedSnippet(string snippet)
         {
             Clipboard.SetText(snippet);
+            StatusBar.ShowStatus("Gistify copied this snippet to the clipboard.");
         }
     }
 }
