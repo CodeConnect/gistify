@@ -37,7 +37,7 @@
          must be a menu. -->
     <Groups>
       <Group guid="guidGistifyCommandPackageCmdSet" id="MyMenuGroup" priority="0x0600">
-        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_TOOLS"/>
+        <Parent guid="guidSHLMainMenu" id="IDM_VS_MENU_EDIT"/>
       </Group>
     </Groups>
 
@@ -72,6 +72,12 @@
     </Bitmaps>
   </Commands>
 
+  <!-- This adds a keyboard shortcut -->
+  <KeyBindings>
+    <KeyBinding guid="guidGistifyCommandPackageCmdSet" id="GistifyCommandId"
+                key1="C" mod1="Control Alt Shift" editor="guidVSStd97" />
+  </KeyBindings>
+  
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidGistifyCommandPackage" value="{3bea2f42-df82-4e1c-93db-590aa082fbca}" />
