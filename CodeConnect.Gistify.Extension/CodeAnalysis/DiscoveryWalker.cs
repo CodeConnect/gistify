@@ -34,16 +34,10 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
 
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
-            base.VisitIdentifierName(node);
             // Process only nodes in the target range
             if (node.Span.Start < _end && node.Span.End > _start)
             {
                 ProcessIdentifierName(node);
-            }
-            else if (SnippetsNamespace == String.Empty)
-            {
-                var symbol = _model.GetSymbolInfo(node).Symbol;
-                SnippetsNamespace = symbol.ContainingNamespace.ToString();
             }
         }
 
@@ -102,42 +96,5 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
             }
         }
 
-        /*
-        public override void VisitFieldDeclaration(FieldDeclarationSyntax node)
-        {
-            base.VisitFieldDeclaration(node);
-            foreach (var variable in node.Declaration.Variables)
-            {
-                var name = variable.Identifier.ToString();
-                var pos = variable.Span.Start;
-                var end = variable.Span.End;
-                var symbol = _model.GetSymbolInfo(node).Symbol;
-                var objectInfo = new ObjectInformation()
-                {
-                    Identifier = variable.Identifier.ToString(),
-                    // TODO: fill the rest
-                };
-                //DefinedOutside.Add(objectInfo);
-            }
-            var t = DefinedOutside;
-        }
-
-        public override void VisitAssignmentExpression(AssignmentExpressionSyntax node)
-        {
-            base.VisitAssignmentExpression(node);
-        }
-
-        public override void VisitPropertyDeclaration(PropertyDeclarationSyntax node)
-        {
-            base.VisitPropertyDeclaration(node);
-
-            var objectInfo = new ObjectInformation()
-            {
-                Identifier = node.Identifier.ToString(),
-                // TODO: fill the rest
-            };
-            //DefinedOutside.Add(objectInfo);
-        }
-        */
     }
 }
