@@ -5,18 +5,17 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeConnect.Gistify.Extension.CodeAnalysis
+namespace CodeConnect.Gistify.Engine
 {
     public static class CodeAnalyzer
     {
-        public static string GetGistFromSnippet(int startPosition, int endPosition, string filePath)
+        public static string AugmentSelection(Document document, int startPosition, int endPosition)
         {
-            var document = VSIntegration.GetDocument(filePath);
             var tree = document.GetSyntaxTreeAsync().Result;
             var model = document.GetSemanticModelAsync().Result;
             var objectInfos = FindDeclarations(tree, model, startPosition, endPosition);
-            var gist = GenerateGist(objectInfos, tree, startPosition, endPosition);
-            return gist;
+            var augmentedSelection = AugmentSnippet(objectInfos, tree, startPosition, endPosition);
+            return augmentedSelection;
         }
 
         /// <summary>
@@ -26,7 +25,7 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         /// </summary>
         /// <param name="snippet">Snippet of code to analyze</param>
         /// <returns>Strign representation of the gist</returns>
-        public static string GenerateGist(IEnumerable<ObjectInformation> objectInfos, SyntaxTree snippet, int startPosition, int endPosition)
+        public static string AugmentSnippet(IEnumerable<ObjectInformation> objectInfos, SyntaxTree snippet, int startPosition, int endPosition)
         {
             var usingStatements = SyntaxBuilder.GetUsingStatements(objectInfos);
             var declarations = SyntaxBuilder.GetDeclarations(objectInfos);
@@ -43,10 +42,6 @@ namespace CodeConnect.Gistify.Extension.CodeAnalysis
         /// <returns>List whose key is the position and value is the name of a declared variable</returns>
         public static IEnumerable<ObjectInformation> FindDeclarations(SyntaxTree syntax, SemanticModel model, int startPosition, int endPosition)
         {
-            // use a walker to visit all declarations
-            // use a semantic model to discover what actually are these declarations (what do they depend on)
-            // TODO: get compilation of a document
-
             var walker = new DiscoveryWalker(startPosition, endPosition, model);
             walker.Visit(syntax.GetRoot());
             return walker.DefinedOutside;

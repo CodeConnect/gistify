@@ -1,7 +1,7 @@
 ﻿using System;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Microsoft.CodeAnalysis.CSharp;
-using CodeConnect.Gistify.Extension.CodeAnalysis;
+using CodeConnect.Gistify.Engine;
 
 namespace CodeConnect.Gistify.Tests
 {

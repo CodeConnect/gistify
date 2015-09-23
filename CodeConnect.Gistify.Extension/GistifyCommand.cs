@@ -10,6 +10,8 @@ using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
+using CodeConnect.Gistify.Extension.ThirdParties;
+using CodeConnect.Gistify.Engine;
 
 namespace CodeConnect.Gistify.Extension
 {
@@ -108,8 +110,9 @@ namespace CodeConnect.Gistify.Extension
                     StatusBar.ShowStatus($"To create a gist, select a snippet of C# code first.");
                     return;
                 }
-                var target = GistifyEngine.PrepareGist(filePath, startPosition, endPosition);
-                GistifyEngine.GoToGist(target);
+                var document = VSIntegration.GetDocument(filePath);
+                var augmentedSnippet = CodeAnalyzer.AugmentSelection(document, startPosition, endPosition);
+                GitHubIntegration.HandleAugmentedSnippet(augmentedSnippet);
             }
             else
             {

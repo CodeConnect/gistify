@@ -6,7 +6,7 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Text;
 using System.Linq;
 
-namespace CodeConnect.Gistify.Extension.CodeAnalysis
+namespace CodeConnect.Gistify.Engine
 {
     public class SyntaxBuilder
     {

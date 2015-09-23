@@ -78,9 +78,9 @@
     <Analyzer Include="..\packages\Microsoft.CodeAnalysis.Analyzers.1.0.0\analyzers\dotnet\cs\Microsoft.CodeAnalysis.CSharp.Analyzers.dll" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CodeConnect.Gistify.Extension\CodeConnect.Gistify.Extension.csproj">
-      <Project>{c3732a23-52dd-4434-b808-f65be7fc87df}</Project>
-      <Name>CodeConnect.Gistify.Extension</Name>
+    <ProjectReference Include="..\CodeConnect.Gistify.Engine\CodeConnect.Gistify.Engine.csproj">
+      <Project>{e69b2ece-7a34-4a9d-8fa9-7da36fd0b914}</Project>
+      <Name>CodeConnect.Gistify.Engine</Name>
     </ProjectReference>
   </ItemGroup>
   <Choose>

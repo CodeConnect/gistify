@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
 
-namespace CodeConnect.Gistify.Extension.CodeAnalysis
+namespace CodeConnect.Gistify.Engine
 {
     public class DiscoveryWalker : CSharpSyntaxWalker
     {

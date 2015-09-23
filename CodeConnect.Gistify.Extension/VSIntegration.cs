@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CodeConnect.Gistify.Extension.CodeAnalysis
+namespace CodeConnect.Gistify.Extension
 {
     static class VSIntegration
     {

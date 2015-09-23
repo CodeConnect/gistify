@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeConnect.Gistify.Extensi
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeConnect.Gistify.Tests", "CodeConnect.Gistify.Tests\CodeConnect.Gistify.Tests.csproj", "{83784E7E-4655-4749-B099-3C858F682632}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CodeConnect.Gistify.Engine", "CodeConnect.Gistify.Engine\CodeConnect.Gistify.Engine.csproj", "{E69B2ECE-7A34-4A9D-8FA9-7DA36FD0B914}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{83784E7E-4655-4749-B099-3C858F682632}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{83784E7E-4655-4749-B099-3C858F682632}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{83784E7E-4655-4749-B099-3C858F682632}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E69B2ECE-7A34-4A9D-8FA9-7DA36FD0B914}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E69B2ECE-7A34-4A9D-8FA9-7DA36FD0B914}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E69B2ECE-7A34-4A9D-8FA9-7DA36FD0B914}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E69B2ECE-7A34-4A9D-8FA9-7DA36FD0B914}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
