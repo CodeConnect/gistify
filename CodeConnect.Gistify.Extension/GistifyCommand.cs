@@ -112,7 +112,7 @@ namespace CodeConnect.Gistify.Extension
                 }
                 var document = VSIntegration.GetDocument(filePath);
                 var augmentedSnippet = CodeAnalyzer.AugmentSelection(document, startPosition, endPosition);
-                GitHubIntegration.HandleAugmentedSnippet(augmentedSnippet);
+                ClipboardIntegration.HandleAugmentedSnippet(augmentedSnippet);
             }
             else
             {
