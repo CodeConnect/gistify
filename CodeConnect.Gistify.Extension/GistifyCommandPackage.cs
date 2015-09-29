@@ -15,6 +15,7 @@ using Microsoft.VisualStudio.OLE.Interop;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.Win32;
+using CodeConnect.Gistify.Extension.Options;
 
 namespace CodeConnect.Gistify.Extension
 {
@@ -40,6 +41,7 @@ namespace CodeConnect.Gistify.Extension
     [ProvideMenuResource("Menus.ctmenu", 1)]
     [Guid(GistifyCommandPackage.PackageGuidString)]
     [SuppressMessage("StyleCop.CSharp.DocumentationRules", "SA1650:ElementDocumentationMustBeSpelledCorrectly", Justification = "pkgdef, VS and vsixmanifest are valid VS terms")]
+    [ProvideOptionPage(typeof(OptionsDialogPage), "Gistify", "Gistify settings", 0, 0, supportsAutomation: true)]
     public sealed class GistifyCommandPackage : Package
     {
         /// <summary>
