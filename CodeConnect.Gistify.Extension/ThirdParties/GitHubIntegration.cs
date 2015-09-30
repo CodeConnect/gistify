@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Octokit;
 using System.ComponentModel;
+using System.Windows;
 
 namespace CodeConnect.Gistify.Extension.ThirdParties
 {
@@ -15,8 +16,16 @@ namespace CodeConnect.Gistify.Extension.ThirdParties
             Task.Run(async  () =>
             {
                 var gistUrl = await createGistAsync(snippet);
-                goToGist(gistUrl);
+                if (Options.SavedOptions.Instance.AfterUploadValue.HasFlag(Options.SavedOptions.AfterUpload.LaunchBrowser))
+                {
+                    goToGist(gistUrl);
+                }
+                if (Options.SavedOptions.Instance.AfterUploadValue.HasFlag(Options.SavedOptions.AfterUpload.CopyLink))
+                {
+                    Clipboard.SetText(gistUrl);
+                }
             });
+            
         }
 
         private static void goToGist(string url)
@@ -54,8 +63,13 @@ namespace CodeConnect.Gistify.Extension.ThirdParties
         {
             try
             {
-                string password = Microsoft.Win32.Registry.GetValue("HKEY_CURRENT_USER", "gitPassword", "invalid").ToString();
-                var credentials = new Octokit.Credentials("git@amadeusw.com", password);
+                var token = Options.SavedOptions.Instance.TokenValue;
+                if (String.IsNullOrWhiteSpace(token))
+                {
+                    StatusBar.ShowStatus("Please provide GitHub access token in Tools > Options > Gistify");
+                    return String.Empty;
+                }
+                var credentials = new Octokit.Credentials(token);
 
                 var connection = new Connection(new ProductHeaderValue("Whatever"))
                 {
