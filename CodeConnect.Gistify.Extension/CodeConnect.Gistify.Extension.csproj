@@ -61,6 +61,7 @@
     <Compile Include="Options\OptionsDialogPageControl.xaml.cs">
       <DependentUpon>OptionsDialogPageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Options\OptionsViewModel.cs" />
     <Compile Include="Options\SavedOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionManager.cs" />

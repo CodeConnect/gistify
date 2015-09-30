@@ -18,6 +18,7 @@ namespace CodeConnect.Gistify.Extension.Options
     public class OptionsDialogPage : UIElementDialogPage
     {
         OptionsDialogPageControl _optionsDialogControl;
+        OptionsViewModel _viewModel;
 
         protected override UIElement Child
         {
@@ -27,13 +28,33 @@ namespace CodeConnect.Gistify.Extension.Options
         protected override void OnActivate(CancelEventArgs e)
         {
             base.OnActivate(e);
-            _optionsDialogControl.DataContext = new SavedOptions();
+            // Build ViewModel based on the Model and pass it to the view
+            _viewModel = new OptionsViewModel(SavedOptions.Instance);
+            _optionsDialogControl.DataContext = _viewModel;
         }
 
+        /// <summary>
+        /// Fired before OnClosed. Fired only when closing via Apply.
+        /// That's why we can't detect clicking Cancel
+        /// </summary>
+        /// <param name="e"></param>
         protected override void OnApply(PageApplyEventArgs e)
         {
-            // TODO: Currently everything just get saved. Provide cancelation
+            if (e.ApplyBehavior == ApplyKind.Apply)
+            {
+                SavedOptions.Instance.SaveOptions();
+            }
             base.OnApply(e);
+        }
+
+        /// <summary>
+        /// Fired when closing either via Apply or Cancel. Fired after OnApply
+        /// Ensures that the model doesn't have changes in case of canceling.
+        /// </summary>
+        /// <param name="e"></param>
+        protected override void OnClosed(EventArgs e)
+        {
+            SavedOptions.Instance.LoadOptions();
         }
     }
 

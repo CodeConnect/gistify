@@ -3,27 +3,25 @@ using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Settings;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Composition;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
 namespace CodeConnect.Gistify.Extension.Options
 {
-    class SavedOptions : INotifyPropertyChanged
+    internal class SavedOptions
     {
         #region Types, constants, fields
 
-        enum DefaultAction
+        internal enum DefaultAction
         {
             CopyToClipboard = 1,
             UploadAsGist = 2,
         }
 
         [Flags]
-        enum AfterUpload
+        internal enum AfterUpload
         {
             LaunchBrowser = 1,
             CopyLink = 2
@@ -35,161 +33,92 @@ namespace CodeConnect.Gistify.Extension.Options
         const string TOKEN_PROPERTY = "Token";
 
         readonly WritableSettingsStore _store;
-        string _token;
-        DefaultAction _defaultAction;
-        AfterUpload _afterUpload;
+        private static SavedOptions _instance;
 
         #endregion
 
-        public SavedOptions()
-        {
-            var shellSettingsManager = new ShellSettingsManager(ServiceProvider.GlobalProvider);
-            _store = shellSettingsManager.GetWritableSettingsStore(SettingsScope.UserSettings);
-
-            loadSettings();
-            prepareForSaving();
-        }
-
-        #region Publicly available properties
-
-        public bool DefaultActionClipboard
+        internal static SavedOptions Instance
         {
             get
             {
-                return _defaultAction == DefaultAction.CopyToClipboard;
-            }
-            set
-            {
-                _defaultAction = value ? DefaultAction.CopyToClipboard : DefaultAction.UploadAsGist;
-                _store.SetInt32(COLLECTION_PATH, DEFAULT_ACTION_PROPERTY, (int)_defaultAction);
-            }
-        }
-
-        public bool DefaultActionUpload
-        {
-            get
-            {
-                return _defaultAction == DefaultAction.UploadAsGist;
-            }
-            set
-            {
-                _defaultAction = value ? DefaultAction.UploadAsGist : DefaultAction.CopyToClipboard;
-                _store.SetInt32(COLLECTION_PATH, DEFAULT_ACTION_PROPERTY, (int)_defaultAction);
-            }
-        }
-
-        public bool AfterUploadLaunch
-        {
-            get
-            {
-                return _afterUpload.HasFlag(AfterUpload.LaunchBrowser);
-            }
-            set
-            {
-                if (value)
+                if (_instance == null)
                 {
-                    _afterUpload |= AfterUpload.LaunchBrowser;
+                    _instance = new SavedOptions();
                 }
-                else
-                {
-                    _afterUpload &= ~AfterUpload.LaunchBrowser;
-                }
-                _store.SetInt32(COLLECTION_PATH, AFTER_UPLOAD_PROPERTY, (int)_afterUpload);
+                return _instance;
             }
         }
 
-        public bool AfterUploadCopyLink
+        internal void SaveOptions()
         {
-            get
+            if (!_store.CollectionExists(COLLECTION_PATH))
             {
-                return _afterUpload.HasFlag(AfterUpload.CopyLink);
+                _store.CreateCollection(COLLECTION_PATH);
             }
-            set
-            {
-                if (value)
-                {
-                    _afterUpload |= AfterUpload.CopyLink;
-                }
-                else
-                {
-                    _afterUpload &= ~AfterUpload.CopyLink;
-                }
-                _store.SetInt32(COLLECTION_PATH, AFTER_UPLOAD_PROPERTY, (int)_afterUpload);
-            }
+            _store.SetString(COLLECTION_PATH, TOKEN_PROPERTY, TokenValue);
+            _store.SetInt32(COLLECTION_PATH, DEFAULT_ACTION_PROPERTY, (int)DefaultActionValue);
+            _store.SetInt32(COLLECTION_PATH, AFTER_UPLOAD_PROPERTY, (int)AfterUploadValue);
         }
 
-        public string Token
+        #region Model's properties
+
+        internal string TokenValue
         {
-            get
-            {
-                return _token;
-            }
-            set
-            {
-                _token = value;
-                _store.SetString(COLLECTION_PATH, TOKEN_PROPERTY, _token);
-            }
+            get; set;
         }
-
-        #endregion
-
-        #region INotifyPropertyChanged Members
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void NotifyPropertyChanged([CallerMemberName] string propertyName = "")
+        internal DefaultAction DefaultActionValue
         {
-            if (PropertyChanged != null)
-            {
-                PropertyChanged(this, new PropertyChangedEventArgs(propertyName));
-            }
+            get; set;
+        }
+        internal AfterUpload AfterUploadValue
+        {
+            get; set;
         }
 
         #endregion
 
         #region Private methods
 
-        private void loadSettings()
+        private SavedOptions()
+        {
+            var shellSettingsManager = new ShellSettingsManager(ServiceProvider.GlobalProvider);
+            _store = shellSettingsManager.GetWritableSettingsStore(SettingsScope.UserSettings);
+
+            LoadOptions();
+        }
+
+        internal void LoadOptions()
         {
             if (_store.PropertyExists(COLLECTION_PATH, TOKEN_PROPERTY))
             {
-                _token = _store.GetString(COLLECTION_PATH, TOKEN_PROPERTY);
+                TokenValue = _store.GetString(COLLECTION_PATH, TOKEN_PROPERTY);
             }
             else
             {
-                _token = String.Empty;
+                TokenValue = String.Empty;
             }
 
             if (_store.PropertyExists(COLLECTION_PATH, DEFAULT_ACTION_PROPERTY))
             {
                 var defaultActionInt = _store.GetInt32(COLLECTION_PATH, DEFAULT_ACTION_PROPERTY);
-                _defaultAction = (DefaultAction)defaultActionInt;
+                DefaultActionValue = (DefaultAction)defaultActionInt;
             }
             else
             {
-                _defaultAction = DefaultAction.CopyToClipboard;
+                DefaultActionValue = DefaultAction.CopyToClipboard;
             }
 
             if (_store.PropertyExists(COLLECTION_PATH, AFTER_UPLOAD_PROPERTY))
             {
                 var afterUploadInt = _store.GetInt32(COLLECTION_PATH, AFTER_UPLOAD_PROPERTY);
-                _afterUpload = (AfterUpload)afterUploadInt;
+                AfterUploadValue = (AfterUpload)afterUploadInt;
             }
             else
             {
-                _afterUpload = AfterUpload.CopyLink | AfterUpload.LaunchBrowser;
-            }
-        }
-
-        private void prepareForSaving()
-        {
-            if (!_store.CollectionExists(COLLECTION_PATH))
-            {
-                _store.CreateCollection(COLLECTION_PATH);
+                AfterUploadValue = AfterUpload.CopyLink | AfterUpload.LaunchBrowser;
             }
         }
 
         #endregion
-
     }
 }
