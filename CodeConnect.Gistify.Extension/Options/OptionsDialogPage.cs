@@ -17,20 +17,22 @@ namespace CodeConnect.Gistify.Extension.Options
     [Guid("1D9ECCF3-5D2F-4112-9B25-264596873DC9")]
     public class OptionsDialogPage : UIElementDialogPage
     {
-        OptionsDialogPageControl optionsDialogControl;
+        OptionsDialogPageControl _optionsDialogControl;
 
         protected override UIElement Child
         {
-            get { return optionsDialogControl ?? (optionsDialogControl = new OptionsDialogPageControl()); }
+            get { return _optionsDialogControl ?? (_optionsDialogControl = new OptionsDialogPageControl()); }
         }
 
         protected override void OnActivate(CancelEventArgs e)
         {
             base.OnActivate(e);
+            _optionsDialogControl.DataContext = new SavedOptions();
         }
 
         protected override void OnApply(PageApplyEventArgs e)
         {
+            // TODO: Currently everything just get saved. Provide cancelation
             base.OnApply(e);
         }
     }

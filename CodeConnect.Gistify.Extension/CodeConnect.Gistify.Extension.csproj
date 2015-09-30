@@ -61,6 +61,7 @@
     <Compile Include="Options\OptionsDialogPageControl.xaml.cs">
       <DependentUpon>OptionsDialogPageControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Options\SavedOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SolutionManager.cs" />
     <Compile Include="StatusBar.cs" />
@@ -230,6 +231,7 @@
       <HintPath>..\packages\System.Collections.Immutable.1.1.37\lib\dotnet\System.Collections.Immutable.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.ComponentModel.Composition" />
     <Reference Include="System.Composition.AttributedModel, Version=1.0.27.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Composition.1.0.27\lib\portable-net45+win8+wp8+wpa81\System.Composition.AttributedModel.dll</HintPath>
       <Private>True</Private>

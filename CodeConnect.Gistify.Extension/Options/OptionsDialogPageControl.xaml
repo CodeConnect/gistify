@@ -26,13 +26,13 @@
     </UserControl.Resources>
     <StackPanel Margin="10">
         <TextBlock>Default action:</TextBlock>
-        <RadioButton>Upload gist</RadioButton>
-        <RadioButton>Copy to clipboard</RadioButton>
+        <RadioButton GroupName="DefaultAction" IsChecked="{Binding Path=DefaultActionClipboard}">Copy to clipboard</RadioButton>
+        <RadioButton GroupName="DefaultAction" IsChecked="{Binding Path=DefaultActionUpload}">Upload gist</RadioButton>
         <TextBlock>Github authentication token:</TextBlock>
-        <TextBlock Margin="10 0 0 0"><Hyperlink>Configure</Hyperlink></TextBlock>
-        <TextBox />
+        <TextBox Text="{Binding Path=Token}"/>
+        <TextBlock Margin="10 0 0 0"><Hyperlink NavigateUri="https://github.com/settings/tokens/new" RequestNavigate="Hyperlink_RequestNavigate">Get token</Hyperlink> <Hyperlink NavigateUri="https://github.com/CodeConnect/gistify/wiki/GitHub-access-token" RequestNavigate="Hyperlink_RequestNavigate">Help</Hyperlink></TextBlock>
         <TextBlock>When uploading gist:</TextBlock>
-        <CheckBox>Launch in browser</CheckBox>
-        <CheckBox>Copy link to clipboard</CheckBox>
+        <CheckBox IsChecked="{Binding Path=AfterUploadLaunch}">Launch in browser</CheckBox>
+        <CheckBox IsChecked="{Binding Path=AfterUploadCopyLink}">Copy link to clipboard</CheckBox>
     </StackPanel>
 </UserControl>
