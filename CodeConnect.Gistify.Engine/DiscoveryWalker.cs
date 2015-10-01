@@ -15,6 +15,14 @@ namespace CodeConnect.Gistify.Engine
         int _start, _end;
 
         internal static IEnumerable<ObjectInformation> FindDeclarations(SyntaxTree tree, SemanticModel model, int startPosition, int endPosition)
+        /// <summary>
+        /// Finds elements used by the code in specified region of provided syntax.
+        /// </summary>
+        /// <param name="tree"></param>
+        /// <param name="model"></param>
+        /// <param name="startPosition"></param>
+        /// <param name="endPosition"></param>
+        /// <returns></returns>
         {
             var walker = new DiscoveryWalker(startPosition, endPosition, model);
             walker.Visit(tree.GetRoot());

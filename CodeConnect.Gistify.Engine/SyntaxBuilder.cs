@@ -22,6 +22,11 @@ namespace CodeConnect.Gistify.Engine
             return gist;
         }
 
+        /// <summary>
+        /// Creates using statements for eligible elements
+        /// </summary>
+        /// <param name="objectInfos"></param>
+        /// <returns></returns>
         private static string getUsingStatements(IEnumerable<ObjectInformation> objectInfos)
         {
             Dictionary<string, string> namespacesAndAssemblies = new Dictionary<string, string>();
@@ -44,6 +49,11 @@ namespace CodeConnect.Gistify.Engine
             return $"using {objectInfo.Namespace}; // in assembly {objectInfo.AssemblyName}";
         }
 
+        /// <summary>
+        /// Creates declarations for eligible elements
+        /// </summary>
+        /// <param name="objectInfos"></param>
+        /// <returns></returns>
         private static string getDeclarations(IEnumerable<ObjectInformation> objectInfos)
         {
             StringBuilder declarations = new StringBuilder();
