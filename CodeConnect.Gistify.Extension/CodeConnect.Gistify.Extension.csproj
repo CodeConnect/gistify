@@ -67,8 +67,8 @@
     <Compile Include="SolutionManager.cs" />
     <Compile Include="StatusBar.cs" />
     <Compile Include="TextManagerExtensions.cs" />
-    <Compile Include="ThirdParties\ClipboardIntegration.cs" />
-    <Compile Include="ThirdParties\GitHubIntegration.cs" />
+    <Compile Include="Integrations\ClipboardIntegration.cs" />
+    <Compile Include="Integrations\GitHubIntegration.cs" />
     <Compile Include="VSIntegration.cs" />
   </ItemGroup>
   <ItemGroup>
