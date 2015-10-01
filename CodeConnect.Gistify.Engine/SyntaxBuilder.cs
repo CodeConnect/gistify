@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Runtime.CompilerServices;
+using System;
 using System.Collections.Generic;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp.Syntax;
@@ -6,40 +7,22 @@ using Microsoft.CodeAnalysis.CSharp;
 using System.Text;
 using System.Linq;
 
+[assembly: InternalsVisibleTo("CodeConnect.Gistify.Tests")]
+
 namespace CodeConnect.Gistify.Engine
 {
-    public class SyntaxBuilder
+    internal class SyntaxBuilder
     {
-        public static string GetSnippet(SyntaxTree snippet, int startPos, int endPos)
+        internal static string AugmentSnippet(IEnumerable<ObjectInformation> objectInfos, SyntaxTree tree, int startPosition, int endPosition)
         {
-            var rawSnippet = snippet.GetText().GetSubText(new Microsoft.CodeAnalysis.Text.TextSpan(startPos, endPos - startPos)).ToString();
-            return removeWhitespace(rawSnippet);
+            var usingStatements = SyntaxBuilder.getUsingStatements(objectInfos);
+            var declarations = SyntaxBuilder.getDeclarations(objectInfos);
+            var snippetCode = SyntaxBuilder.getSnippet(tree, startPosition, endPosition);
+            var gist = SyntaxBuilder.buildGist(usingStatements, declarations, snippetCode);
+            return gist;
         }
 
-        private static string removeWhitespace(string rawSnippet)
-        {
-            var lines = rawSnippet.Split('\n');
-            var lines2 = lines.Select(n => n).ToList();
-
-            var leastWhitespace = lines.Min(
-                l => String.IsNullOrWhiteSpace(l)
-                ? int.MaxValue
-                : l.TakeWhile(c => c == '\t' || c == ' ').Count()
-                );
-            var trimmedLines = lines.Select(
-                l => String.IsNullOrWhiteSpace(l)
-                ? l
-                : l.Substring(leastWhitespace)).ToList();
-
-            return String.Join("\n", trimmedLines);
-        }
-
-        public static string GetGist(string usingStatements, string declarations, string snippetCode)
-        {
-            return String.Concat(/*usingStatements, */declarations, snippetCode);
-        }
-
-        public static string GetUsingStatements(IEnumerable<ObjectInformation> objectInfos)
+        private static string getUsingStatements(IEnumerable<ObjectInformation> objectInfos)
         {
             Dictionary<string, string> namespacesAndAssemblies = new Dictionary<string, string>();
             StringBuilder usingStatements = new StringBuilder();
@@ -56,7 +39,12 @@ namespace CodeConnect.Gistify.Engine
             return usingStatements.ToString();
         }
 
-        public static string GetDeclarations(IEnumerable<ObjectInformation> objectInfos)
+        private static string createUsingStatement(ObjectInformation objectInfo)
+        {
+            return $"using {objectInfo.Namespace}; // in assembly {objectInfo.AssemblyName}";
+        }
+
+        private static string getDeclarations(IEnumerable<ObjectInformation> objectInfos)
         {
             StringBuilder declarations = new StringBuilder();
             HashSet<ObjectInformation> processedObjects = new HashSet<ObjectInformation>();
@@ -80,14 +68,38 @@ namespace CodeConnect.Gistify.Engine
             return declarations.ToString();
         }
 
-        private static string createUsingStatement(ObjectInformation objectInfo)
-        {
-            return $"using {objectInfo.Namespace}; // in assembly {objectInfo.AssemblyName}";
-        }
-
         private static string createDeclaration(ObjectInformation objectInfo)
         {
             return $"{objectInfo.TypeName} {objectInfo.Identifier}; // using {objectInfo.Namespace}";
+        }
+
+        private static string getSnippet(SyntaxTree tree, int startPos, int endPos)
+        {
+            var rawSnippet = tree.GetText().GetSubText(new Microsoft.CodeAnalysis.Text.TextSpan(startPos, endPos - startPos)).ToString();
+            return removeWhitespace(rawSnippet);
+        }
+
+        private static string removeWhitespace(string rawSnippet)
+        {
+            var lines = rawSnippet.Split('\n');
+            var lines2 = lines.Select(n => n).ToList();
+
+            var leastWhitespace = lines.Min(
+                l => String.IsNullOrWhiteSpace(l)
+                ? int.MaxValue
+                : l.TakeWhile(c => c == '\t' || c == ' ').Count()
+                );
+            var trimmedLines = lines.Select(
+                l => String.IsNullOrWhiteSpace(l)
+                ? l
+                : l.Substring(leastWhitespace)).ToList();
+
+            return String.Join("\n", trimmedLines);
+        }
+
+        private static string buildGist(string usingStatements, string declarations, string snippetCode)
+        {
+            return String.Concat(/*usingStatements, */declarations, snippetCode);
         }
     }
 }

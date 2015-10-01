@@ -7,7 +7,7 @@ using Microsoft.CodeAnalysis;
 
 namespace CodeConnect.Gistify.Engine
 {
-    public struct ObjectInformation
+    internal struct ObjectInformation
     {
         internal string TypeName
         {

@@ -9,27 +9,29 @@ using Microsoft.CodeAnalysis.CSharp.Syntax;
 
 namespace CodeConnect.Gistify.Engine
 {
-    public class DiscoveryWalker : CSharpSyntaxWalker
+    internal class DiscoveryWalker : CSharpSyntaxWalker
     {
         SemanticModel _model;
         int _start, _end;
 
-        /// <summary>
-        /// Namespace of the first identifier in this snippet. We won't display usings for this one.
-        /// </summary>
-        public string SnippetsNamespace { get; private set; }
+        internal static IEnumerable<ObjectInformation> FindDeclarations(SyntaxTree tree, SemanticModel model, int startPosition, int endPosition)
+        {
+            var walker = new DiscoveryWalker(startPosition, endPosition, model);
+            walker.Visit(tree.GetRoot());
+            return walker.definedWithinSnippet;
+        }
 
         /// <summary>
         /// Contains information of objects defined outside of the provided scope
         /// </summary>
-        public List<ObjectInformation> DefinedOutside { get; private set; }
+        private List<ObjectInformation> definedWithinSnippet { get; set; }
 
-        public DiscoveryWalker(int start, int end, SemanticModel model)
+        private DiscoveryWalker(int start, int end, SemanticModel model)
         {
             _model = model;
             _start = start;
             _end = end;
-            DefinedOutside = new List<ObjectInformation>();
+            definedWithinSnippet = new List<ObjectInformation>();
         }
 
         public override void VisitIdentifierName(IdentifierNameSyntax node)
@@ -37,11 +39,11 @@ namespace CodeConnect.Gistify.Engine
             // Process only nodes in the target range
             if (node.Span.Start < _end && node.Span.End > _start)
             {
-                ProcessIdentifierName(node);
+                processIdentifierName(node);
             }
         }
 
-        private void ProcessIdentifierName(IdentifierNameSyntax node)
+        private void processIdentifierName(IdentifierNameSyntax node)
         {
             var symbol = _model.GetSymbolInfo(node).Symbol;
             var type = _model.GetTypeInfo(node).Type;
@@ -89,7 +91,7 @@ namespace CodeConnect.Gistify.Engine
                             AssemblyName = type?.ContainingAssembly?.Name ?? String.Empty,
                             Kind = symbol.Kind.ToString(),
                         };
-                        DefinedOutside.Add(objectInfo);
+                        definedWithinSnippet.Add(objectInfo);
                     }
 
                 }
