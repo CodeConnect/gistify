@@ -16,6 +16,10 @@ namespace CodeConnect.Gistify.Extension.Integrations
             Task.Run(async  () =>
             {
                 var gistUrl = await createGistAsync(snippet);
+                if (String.IsNullOrEmpty(gistUrl))
+                {
+                    return;
+                }
                 if (Options.SavedOptions.Instance.AfterUploadValue.HasFlag(Options.SavedOptions.AfterUpload.LaunchBrowser))
                 {
                     goToGist(gistUrl);

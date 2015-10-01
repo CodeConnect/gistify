@@ -111,7 +111,7 @@ namespace CodeConnect.Gistify.Extension
             {
                 if (endPosition == startPosition)
                 {
-                    StatusBar.ShowStatus($"To create a gist, select a snippet of C# code first.");
+                    StatusBar.ShowStatus($"To gistify, select a snippet of C# code first.");
                     return;
                 }
                 var document = VSIntegration.GetDocument(filePath);
@@ -120,7 +120,7 @@ namespace CodeConnect.Gistify.Extension
             }
             else
             {
-                StatusBar.ShowStatus("To create a gist, select a snippet of C# code first.");
+                StatusBar.ShowStatus("To gistify, select a snippet of C# code first.");
             }
         }
 
