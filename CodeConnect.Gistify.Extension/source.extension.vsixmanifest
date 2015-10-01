@@ -1,9 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <PackageManifest Version="2.0.0" xmlns="http://schemas.microsoft.com/developer/vsx-schema/2011" xmlns:d="http://schemas.microsoft.com/developer/vsx-schema-design/2011">
   <Metadata>
-    <Identity Id="CodeConnect.Gistify.Extension.Amadeus.ca2edc3f-f1ca-4f62-8ae2-f1f87004a6a2" Version="0.9" Language="en-US" Publisher="Code Connect" />
-    <DisplayName>CodeConnect.Gistify.Extension</DisplayName>
-    <Description xml:space="preserve">Includes information needed to understand piece of code out of context.</Description>
+    <Identity Id="CodeConnect.Gistify.Extension.Amadeus.ca2edc3f-f1ca-4f62-8ae2-f1f87004a6a2" Version="1.0" Language="en-US" Publisher="Code Connect" />
+    <DisplayName>Gistify</DisplayName>
+    <Description xml:space="preserve">Extends snippet of code with information needed to understand it out of context.</Description>
+    <Icon>Resources/GistifyIcon.ico</Icon>
+    <Tags>copy, gist, github, upload, roslyn, using</Tags>
   </Metadata>
   <Installation>
     <InstallationTarget Id="Microsoft.VisualStudio.Community" Version="[14.0]" />

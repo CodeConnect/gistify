@@ -26,6 +26,7 @@ namespace CodeConnect.Gistify.Extension
         /// Command ID.
         /// </summary>
         public const int CommandId = 0x0100;
+        public const int ContextCommandId = 0x0101;
 
         /// <summary>
         /// Command menu group (command set GUID).
@@ -57,6 +58,9 @@ namespace CodeConnect.Gistify.Extension
                 var menuCommandID = new CommandID(CommandSet, CommandId);
                 var menuItem = new MenuCommand(this.MenuItemCallback, menuCommandID);
                 commandService.AddCommand(menuItem);
+                var contextMenuCommandID = new CommandID(CommandSet, ContextCommandId);
+                var contextMenuItem = new MenuCommand(this.MenuItemCallback, contextMenuCommandID);
+                commandService.AddCommand(contextMenuItem);
             }
         }
 
