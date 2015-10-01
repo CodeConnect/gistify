@@ -7,7 +7,7 @@ using Octokit;
 using System.ComponentModel;
 using System.Windows;
 
-namespace CodeConnect.Gistify.Extension.ThirdParties
+namespace CodeConnect.Gistify.Extension.Integrations
 {
     static class GitHubIntegration
     {

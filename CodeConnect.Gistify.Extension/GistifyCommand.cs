@@ -10,7 +10,7 @@ using System.Globalization;
 using Microsoft.VisualStudio.Shell;
 using Microsoft.VisualStudio.Shell.Interop;
 using Microsoft.VisualStudio.TextManager.Interop;
-using CodeConnect.Gistify.Extension.ThirdParties;
+using CodeConnect.Gistify.Extension.Integrations;
 using CodeConnect.Gistify.Engine;
 
 namespace CodeConnect.Gistify.Extension
@@ -116,18 +116,24 @@ namespace CodeConnect.Gistify.Extension
                 }
                 var document = VSIntegration.GetDocument(filePath);
                 var augmentedSnippet = CodeAnalyzer.AugmentSelection(document, startPosition, endPosition);
-                if (Options.SavedOptions.Instance.DefaultActionValue == Options.SavedOptions.DefaultAction.CopyToClipboard)
-                {
-                    ClipboardIntegration.HandleAugmentedSnippet(augmentedSnippet);
-                }
-                else
-                {
-                    GitHubIntegration.HandleAugmentedSnippet(augmentedSnippet);
-                }
+                handleAugmentedSnippet(augmentedSnippet);
             }
             else
             {
                 StatusBar.ShowStatus("To create a gist, select a snippet of C# code first.");
+            }
+        }
+
+        private void handleAugmentedSnippet(string augmentedSnippet)
+        {
+            switch (Options.SavedOptions.Instance.DefaultActionValue)
+            {
+                case Options.SavedOptions.DefaultAction.CopyToClipboard:
+                    ClipboardIntegration.HandleAugmentedSnippet(augmentedSnippet);
+                    break;
+                case Options.SavedOptions.DefaultAction.UploadAsGist:
+                    GitHubIntegration.HandleAugmentedSnippet(augmentedSnippet);
+                    break;
             }
         }
     }

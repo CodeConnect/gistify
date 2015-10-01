@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 
-namespace CodeConnect.Gistify.Extension.ThirdParties
+namespace CodeConnect.Gistify.Extension.Integrations
 {
     static class ClipboardIntegration
     {
