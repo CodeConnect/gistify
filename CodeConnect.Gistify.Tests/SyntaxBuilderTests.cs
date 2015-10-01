@@ -28,5 +28,14 @@ namespace CodeConnect.Gistify.Tests
             Assert.IsFalse(snippet.Contains("\t"));
             Assert.IsFalse(snippet.Contains("     "));
         }
+
+        [TestMethod]
+        public void SnippetWithNoAugmentationNeedIsLeftIntact()
+        {
+            Microsoft.CodeAnalysis.SyntaxTree tree = TestHelpers.GetSampleTree1();
+            var emptyInfos = new List<ObjectInformation>();
+            var snippet = SyntaxBuilder.AugmentSnippet(emptyInfos, tree, 0, 582);
+            Assert.IsFalse(snippet.Contains(SyntaxBuilder.SPACER));
+        }
     }
 }

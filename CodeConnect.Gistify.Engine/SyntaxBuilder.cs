@@ -35,9 +35,15 @@ namespace CodeConnect.Gistify.Engine
             StringBuilder usingStatements = new StringBuilder();
             foreach (var objectInfo in objectInfos)
             {
+                if (canHaveDeclaration(objectInfo))
+                {
+                    // This elment won't get a declaration, see if it needs a usings statement
+                    continue;
+                }
                 var name = objectInfo.Namespace;
                 if (namespacesAndAssemblies.ContainsKey(name))
                 {
+                    // Don't repeat using statements
                     continue;
                 }
                 usingStatements.AppendLine(createUsingStatement(objectInfo));
@@ -46,9 +52,21 @@ namespace CodeConnect.Gistify.Engine
             return usingStatements.ToString();
         }
 
+        /// <summary>
+        /// Decides whether the element needs a declaration or just a usings statement
+        /// </summary>
+        /// <param name="objectInfo"></param>
+        /// <returns></returns>
+        private static bool canHaveDeclaration(ObjectInformation objectInfo)
+        {
+            // This is a naive approach. From my basic tests it looks like NamedType comes from a declaration
+            // and thus doesn't need another declaration
+            return objectInfo.Kind != SymbolKind.NamedType;
+        }
+
         private static string createUsingStatement(ObjectInformation objectInfo)
         {
-            return $"using {objectInfo.Namespace}; // in assembly {objectInfo.AssemblyName}";
+            return $"using {objectInfo.Namespace}; // ({objectInfo.AssemblyName})";
         }
 
         /// <summary>
@@ -60,29 +78,27 @@ namespace CodeConnect.Gistify.Engine
         {
             StringBuilder declarations = new StringBuilder();
             HashSet<ObjectInformation> processedObjects = new HashSet<ObjectInformation>();
-            string previousKind = String.Empty;
 
             foreach (var objectInfo in objectInfos.OrderBy(info => info.Kind))
             {
-                if (previousKind != objectInfo.Kind)
+                if (!canHaveDeclaration(objectInfo))
                 {
-                    declarations.AppendLine($"// {objectInfo.Kind}:");
-                    previousKind = objectInfo.Kind;
+                    continue;
                 }
                 if (processedObjects.Contains(objectInfo))
                 {
+                    // Don't duplicate declarations
                     continue;
                 }
                 declarations.AppendLine(createDeclaration(objectInfo));
                 processedObjects.Add(objectInfo);
             }
-            declarations.AppendLine("/* --- */");
             return declarations.ToString();
         }
 
         private static string createDeclaration(ObjectInformation objectInfo)
         {
-            return $"{objectInfo.TypeName} {objectInfo.Identifier}; // using {objectInfo.Namespace}";
+            return $"{objectInfo.TypeName} {objectInfo.Identifier}; // using {objectInfo.Namespace} ({objectInfo.AssemblyName})";
         }
 
         private static string getSnippet(SyntaxTree tree, int startPos, int endPos)

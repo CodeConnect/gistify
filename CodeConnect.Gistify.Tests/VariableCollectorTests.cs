@@ -20,14 +20,16 @@ namespace CodeConnect.Gistify.Tests
             var start = 582;
             var end = start + 125 + 2;
 
-            var declarations = DiscoveryWalker.FindDeclarations(tree, model, start, end);
-            var snippet = SyntaxBuilder.AugmentSnippet(declarations, tree, start, end);
+            var objectInfos = DiscoveryWalker.FindObjects(tree, model, start, end);
+            var snippet = SyntaxBuilder.AugmentSnippet(objectInfos, tree, start, end);
 
             var lines = snippet.Split('\n');
-            var usings = lines.Where(l => l.Contains("// using")).ToList();
+            var usings = lines.Where(l => l.StartsWith("using ")).ToList();
+            var declarations = lines.Where(l => l.Contains("// using")).ToList();
 
-            Assert.AreEqual(2, declarations.Count());
-            Assert.AreEqual(2, usings.Count);
+            Assert.AreEqual(2, objectInfos.Count());
+            Assert.AreEqual(1, usings.Count);
+            Assert.AreEqual(2, declarations.Count);
         }
 
         [TestMethod]
@@ -41,14 +43,16 @@ namespace CodeConnect.Gistify.Tests
             var start = 748;
             var end = start + 202 + 5;
 
-            var declarations = DiscoveryWalker.FindDeclarations(tree, model, start, end);
-            var snippet = SyntaxBuilder.AugmentSnippet(declarations, tree, start, end);
+            var objectInfos = DiscoveryWalker.FindObjects(tree, model, start, end);
+            var snippet = SyntaxBuilder.AugmentSnippet(objectInfos, tree, start, end);
 
             var lines = snippet.Split('\n');
-            var usings = lines.Where(l => l.Contains("// using")).ToList();
+            var usings = lines.Where(l => l.StartsWith("using ")).ToList();
+            var declarations = lines.Where(l => l.Contains("// using")).ToList();
 
-            Assert.AreEqual(2, declarations.Count());
-            Assert.AreEqual(2, usings.Count);
+            Assert.AreEqual(3, objectInfos.Count());
+            Assert.AreEqual(1, usings.Count);
+            Assert.AreEqual(2, declarations.Count);
         }
 
         [TestMethod]
@@ -61,14 +65,16 @@ namespace CodeConnect.Gistify.Tests
             var start = 582 + 56;
             var end = start + 23;
 
-            var declarations = DiscoveryWalker.FindDeclarations(tree, model, start, end);
-            var snippet = SyntaxBuilder.AugmentSnippet(declarations, tree, start, end);
+            var objectInfos = DiscoveryWalker.FindObjects(tree, model, start, end);
+            var snippet = SyntaxBuilder.AugmentSnippet(objectInfos, tree, start, end);
 
             var lines = snippet.Split('\n');
-            var usings = lines.Where(l => l.Contains("// using")).ToList();
+            var usings = lines.Where(l => l.StartsWith("using ")).ToList();
+            var declarations = lines.Where(l => l.Contains("// using")).ToList();
 
-            Assert.AreEqual(2, declarations.Count());
-            Assert.AreEqual(2, usings.Count);
+            Assert.AreEqual(2, objectInfos.Count());
+            Assert.AreEqual(1, usings.Count);
+            Assert.AreEqual(2, declarations.Count);
         }
 
     }
