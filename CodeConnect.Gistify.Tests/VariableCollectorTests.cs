@@ -77,5 +77,26 @@ namespace CodeConnect.Gistify.Tests
             Assert.AreEqual(2, declarations.Count);
         }
 
+        [TestMethod]
+        public void IgnoreStringEmpty()
+        {
+            Microsoft.CodeAnalysis.SyntaxTree tree = TestHelpers.GetSampleTree2();
+            var compilation = TestHelpers.CreateCompilation(tree);
+            var model = compilation.GetSemanticModel(tree);
+
+            var start = 179;
+            var end = start + 120;
+
+            var objectInfos = DiscoveryWalker.FindObjects(tree, model, start, end);
+            var snippet = SyntaxBuilder.AugmentSnippet(objectInfos, tree, start, end);
+
+            var lines = snippet.Split('\n');
+            var usings = lines.Where(l => l.StartsWith("using ")).ToList();
+            var declarations = lines.Where(l => l.Contains("// using")).ToList();
+
+            Assert.AreEqual(0, objectInfos.Count());
+            Assert.AreEqual(1, usings.Count);
+            Assert.AreEqual(0, declarations.Count);
+        }
     }
 }

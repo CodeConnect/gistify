@@ -64,5 +64,16 @@ namespace CodeConnect.Gistify.MockNamespace
                 }
             }");
         }
+
+        internal static SyntaxTree GetSampleTree2()
+        {
+            return TestHelpers.GetTestSyntaxTreeWithCode(@"public class SampleClass
+            {
+                static SampleClass()
+                {
+                    var test = String.Empty;
+                }
+            }");
+        }
     }
 }
