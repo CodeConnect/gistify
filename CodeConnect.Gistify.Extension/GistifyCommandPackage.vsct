@@ -53,10 +53,10 @@
               <CommandFlag>DynamicVisibility</CommandFlag>
           If you do not want an image next to your command, remove the Icon node /> -->
       <Button guid="guidGistifyCommandPackageCmdSet" id="GistifyCommandId" priority="0x0100" type="Button">
-        <Parent guid="guidGistifyCommandPackageCmdSet" id="IDM_VS_MENU_EDIT" />
+        <Parent guid="guidSHLMainMenu" id="IDG_VS_EDIT_CUTCOPY" />
         <Icon guid="guidImages" id="menuIcon1" />
         <Strings>
-          <ButtonText>Gistify this snippet</ButtonText>
+          <ButtonText>Gistify selection</ButtonText>
         </Strings>
       </Button>
       <Button guid="guidGistifyCommandPackageCmdSet" id="GistifyContextCommandId" priority="0x0101" type="Button">
