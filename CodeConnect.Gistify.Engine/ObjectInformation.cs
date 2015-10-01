@@ -25,7 +25,7 @@ namespace CodeConnect.Gistify.Engine
         {
             get; set;
         }
-        internal string Kind
+        internal SymbolKind Kind
         {
             get; set;
         }

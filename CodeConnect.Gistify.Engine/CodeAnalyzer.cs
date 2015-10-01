@@ -21,7 +21,7 @@ namespace CodeConnect.Gistify.Engine
         {
             var tree = document.GetSyntaxTreeAsync().Result;
             var model = document.GetSemanticModelAsync().Result;
-            var objectInfos = DiscoveryWalker.FindDeclarations(tree, model, startPosition, endPosition);
+            var objectInfos = DiscoveryWalker.FindObjects(tree, model, startPosition, endPosition);
             var augmentedSelection = SyntaxBuilder.AugmentSnippet(objectInfos, tree, startPosition, endPosition);
             return augmentedSelection;
         }

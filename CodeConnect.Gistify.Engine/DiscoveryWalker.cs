@@ -14,7 +14,6 @@ namespace CodeConnect.Gistify.Engine
         SemanticModel _model;
         int _start, _end;
 
-        internal static IEnumerable<ObjectInformation> FindDeclarations(SyntaxTree tree, SemanticModel model, int startPosition, int endPosition)
         /// <summary>
         /// Finds elements used by the code in specified region of provided syntax.
         /// </summary>
@@ -23,6 +22,7 @@ namespace CodeConnect.Gistify.Engine
         /// <param name="startPosition"></param>
         /// <param name="endPosition"></param>
         /// <returns></returns>
+        internal static IEnumerable<ObjectInformation> FindObjects(SyntaxTree tree, SemanticModel model, int startPosition, int endPosition)
         {
             var walker = new DiscoveryWalker(startPosition, endPosition, model);
             walker.Visit(tree.GetRoot());
@@ -97,7 +97,7 @@ namespace CodeConnect.Gistify.Engine
                             TypeName = typeName ?? String.Empty,
                             Namespace = type?.ContainingNamespace?.ToString() ?? String.Empty,
                             AssemblyName = type?.ContainingAssembly?.Name ?? String.Empty,
-                            Kind = symbol.Kind.ToString(),
+                            Kind = symbol.Kind,
                         };
                         definedWithinSnippet.Add(objectInfo);
                     }

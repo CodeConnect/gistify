@@ -13,6 +13,8 @@ namespace CodeConnect.Gistify.Engine
 {
     internal class SyntaxBuilder
     {
+        internal const string SPACER = "// . . . \n";
+
         internal static string AugmentSnippet(IEnumerable<ObjectInformation> objectInfos, SyntaxTree tree, int startPosition, int endPosition)
         {
             var usingStatements = SyntaxBuilder.getUsingStatements(objectInfos);
@@ -109,7 +111,11 @@ namespace CodeConnect.Gistify.Engine
 
         private static string buildGist(string usingStatements, string declarations, string snippetCode)
         {
-            return String.Concat(/*usingStatements, */declarations, snippetCode);
+            string spacer = 
+                String.IsNullOrEmpty(usingStatements) || String.IsNullOrEmpty(declarations) 
+                ? String.Empty
+                : SPACER;
+            return String.Concat(usingStatements, declarations, spacer, snippetCode);
         }
     }
 }
