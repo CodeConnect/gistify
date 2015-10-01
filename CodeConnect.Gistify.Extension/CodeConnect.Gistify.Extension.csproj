@@ -79,10 +79,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Resources\GistifyExtensionIcon.png">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-      <IncludeInVSIX>true</IncludeInVSIX>
-    </Content>
     <Content Include="Resources\GistifyIcon.ico">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
