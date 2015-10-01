@@ -128,7 +128,7 @@ namespace CodeConnect.Gistify.Engine
         private static string buildGist(string usingStatements, string declarations, string snippetCode)
         {
             string spacer = 
-                String.IsNullOrEmpty(usingStatements) || String.IsNullOrEmpty(declarations) 
+                String.IsNullOrEmpty(usingStatements) && String.IsNullOrEmpty(declarations) 
                 ? String.Empty
                 : SPACER;
             return String.Concat(usingStatements, declarations, spacer, snippetCode);
