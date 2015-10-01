@@ -12,7 +12,26 @@ namespace CodeConnect.Gistify.Engine
     {
         public static string GetSnippet(SyntaxTree snippet, int startPos, int endPos)
         {
-            return snippet.GetText().GetSubText(new Microsoft.CodeAnalysis.Text.TextSpan(startPos, endPos - startPos)).ToString();
+            var rawSnippet = snippet.GetText().GetSubText(new Microsoft.CodeAnalysis.Text.TextSpan(startPos, endPos - startPos)).ToString();
+            return removeWhitespace(rawSnippet);
+        }
+
+        private static string removeWhitespace(string rawSnippet)
+        {
+            var lines = rawSnippet.Split('\n');
+            var lines2 = lines.Select(n => n).ToList();
+
+            var leastWhitespace = lines.Min(
+                l => String.IsNullOrWhiteSpace(l)
+                ? int.MaxValue
+                : l.TakeWhile(c => c == '\t' || c == ' ').Count()
+                );
+            var trimmedLines = lines.Select(
+                l => String.IsNullOrWhiteSpace(l)
+                ? l
+                : l.Substring(leastWhitespace)).ToList();
+
+            return String.Join("\n", trimmedLines);
         }
 
         public static string GetGist(string usingStatements, string declarations, string snippetCode)
