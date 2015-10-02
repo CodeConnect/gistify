@@ -114,7 +114,16 @@ namespace CodeConnect.Gistify.Extension
                     StatusBar.ShowStatus($"To gistify, select a snippet of C# code first.");
                     return;
                 }
-                var document = VSIntegration.GetDocument(filePath);
+                Microsoft.CodeAnalysis.Document document;
+                try
+                {
+                    document = VSIntegration.GetDocument(filePath);
+                }
+                catch (NullReferenceException ex)
+                {
+                    StatusBar.ShowStatus($"Error accessing the document. Try building the solution.");
+                    return;
+                }
                 var augmentedSnippet = CodeAnalyzer.AugmentSelection(document, startPosition, endPosition);
                 handleAugmentedSnippet(augmentedSnippet);
             }
