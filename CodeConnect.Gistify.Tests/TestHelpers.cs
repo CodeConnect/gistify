@@ -69,9 +69,11 @@ namespace CodeConnect.Gistify.MockNamespace
         {
             return TestHelpers.GetTestSyntaxTreeWithCode(@"public class SampleClass
             {
+                static string empty1;
                 static SampleClass()
                 {
                     var test = String.Empty;
+                    string empty2 = empty1;
                 }
             }");
         }

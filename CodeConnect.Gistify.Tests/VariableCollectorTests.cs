@@ -84,8 +84,8 @@ namespace CodeConnect.Gistify.Tests
             var compilation = TestHelpers.CreateCompilation(tree);
             var model = compilation.GetSemanticModel(tree);
 
-            var start = 179;
-            var end = start + 120;
+            var start = 217;
+            var end = start + 166;
 
             var objectInfos = DiscoveryWalker.FindObjects(tree, model, start, end);
             var snippet = SyntaxBuilder.AugmentSnippet(objectInfos, tree, start, end);
