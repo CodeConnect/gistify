@@ -42,6 +42,10 @@ namespace CodeConnect.Gistify.Engine
             definedWithinSnippet = new List<ObjectInformation>();
         }
 
+        /// <summary>
+        /// Called by the base class. Processes identifiers that are in desired range.
+        /// </summary>
+        /// <param name="node"></param>
         public override void VisitIdentifierName(IdentifierNameSyntax node)
         {
             // Process only nodes in the target range
@@ -51,6 +55,11 @@ namespace CodeConnect.Gistify.Engine
             }
         }
 
+        /// <summary>
+        /// Examines the identifier and if applicable, creates an instance of ObjectInformation
+        /// which will be consumed later by the SyntaxBuilder
+        /// </summary>
+        /// <param name="node"></param>
         private void processIdentifierName(IdentifierNameSyntax node)
         {
             var symbol = _model.GetSymbolInfo(node).Symbol;
@@ -108,10 +117,8 @@ namespace CodeConnect.Gistify.Engine
                         };
                         definedWithinSnippet.Add(objectInfo);
                     }
-
                 }
             }
         }
-
     }
 }
