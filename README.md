@@ -5,6 +5,8 @@ A hassle free tool that intelligently touches-up and uploads your code snippets.
 
 Selected snippet of code is enhanced with information about the types and origin of objects used within.
 
+Read the **[Getting Started guide](https://github.com/CodeConnect/gistify/wiki)**
+
 ### Example
 
 Input:
