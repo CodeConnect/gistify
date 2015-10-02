@@ -63,7 +63,7 @@
         <Parent guid="guidGistifyCommandPackageCmdSet" id="ContextMenuGroup" />
         <Icon guid="guidImages" id="menuIcon1" />
         <Strings>
-          <ButtonText>Gistify this snippet</ButtonText>
+          <ButtonText>Gistify selection</ButtonText>
         </Strings>
       </Button>
     </Buttons>
