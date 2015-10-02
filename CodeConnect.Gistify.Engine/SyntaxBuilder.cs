@@ -98,7 +98,7 @@ namespace CodeConnect.Gistify.Engine
 
         private static string createDeclaration(ObjectInformation objectInfo)
         {
-            return $"{objectInfo.TypeName} {objectInfo.Identifier}; // using {objectInfo.Namespace} ({objectInfo.AssemblyName})";
+            return $"{objectInfo.TypeName} {objectInfo.Identifier}; // using {objectInfo.Namespace}; ({objectInfo.AssemblyName})";
         }
 
         private static string getSnippet(SyntaxTree tree, int startPos, int endPos)
