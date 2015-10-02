@@ -67,10 +67,8 @@ namespace CodeConnect.Gistify.Engine
             }
             if (symbol != null)
             {
-                // Not used:
-                // var fullTypeName = type?.ToString() ?? String.Empty;
-                // var containingType = symbol.ContainingType;
                 var typeName = type?.Name ?? String.Empty;
+                // Handle generics (TODO: recursively go through all levels)
                 var namedType = type as INamedTypeSymbol;
                 if (namedType != null)
                 {
@@ -84,6 +82,15 @@ namespace CodeConnect.Gistify.Engine
                     {
                         typeName = $"{type?.Name}<{String.Join(", ", argumentNames)}>";
                     }
+                }
+
+                // Attempt to remove trivial identifiers like String.Empty
+                var definitionName = symbol.OriginalDefinition.ToDisplayString();
+                var actualName = typeName + "." + symbol.MetadataName;
+                if (String.Compare(definitionName, actualName, ignoreCase: true) == 0)
+                {
+                    // This identifier is already well defined in the snippet.
+                    return;
                 }
 
                 foreach (var location in symbol.OriginalDefinition.Locations)

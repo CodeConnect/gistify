@@ -28,7 +28,7 @@ namespace CodeConnect.Gistify.Tests
             var declarations = lines.Where(l => l.Contains("// using")).ToList();
 
             Assert.AreEqual(2, objectInfos.Count());
-            Assert.AreEqual(1, usings.Count);
+            Assert.AreEqual(0, usings.Count);
             Assert.AreEqual(2, declarations.Count);
         }
 
@@ -73,7 +73,7 @@ namespace CodeConnect.Gistify.Tests
             var declarations = lines.Where(l => l.Contains("// using")).ToList();
 
             Assert.AreEqual(2, objectInfos.Count());
-            Assert.AreEqual(1, usings.Count);
+            Assert.AreEqual(0, usings.Count);
             Assert.AreEqual(2, declarations.Count);
         }
 
@@ -94,9 +94,9 @@ namespace CodeConnect.Gistify.Tests
             var usings = lines.Where(l => l.StartsWith("using ")).ToList();
             var declarations = lines.Where(l => l.Contains("// using")).ToList();
 
-            Assert.AreEqual(0, objectInfos.Count());
+            Assert.AreEqual(2, objectInfos.Count());
             Assert.AreEqual(1, usings.Count);
-            Assert.AreEqual(0, declarations.Count);
+            Assert.AreEqual(1, declarations.Count);
         }
     }
 }
