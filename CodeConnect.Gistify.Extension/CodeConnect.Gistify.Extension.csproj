@@ -83,7 +83,17 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <IncludeInVSIX>true</IncludeInVSIX>
     </Content>
-    <Content Include="Resources\GistifyMenuIcon.png" />
+    <Content Include="Resources\GistifyMenuIcon.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Resources\license.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
+    <Content Include="Resources\screenshotSmall.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <IncludeInVSIX>true</IncludeInVSIX>
+    </Content>
     <VSCTCompile Include="GistifyCommandPackage.vsct">
       <ResourceName>Menus.ctmenu</ResourceName>
     </VSCTCompile>
