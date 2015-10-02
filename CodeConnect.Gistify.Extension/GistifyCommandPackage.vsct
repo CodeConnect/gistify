@@ -79,12 +79,6 @@
     </Bitmaps>
   </Commands>
 
-  <!-- This adds a keyboard shortcut -->
-  <KeyBindings>
-    <KeyBinding guid="guidGistifyCommandPackageCmdSet" id="GistifyCommandId"
-                key1="C" mod1="Control Alt Shift" editor="guidVSStd97" />
-  </KeyBindings>
-  
   <Symbols>
     <!-- This is the package guid. -->
     <GuidSymbol name="guidGistifyCommandPackage" value="{3bea2f42-df82-4e1c-93db-590aa082fbca}" />
